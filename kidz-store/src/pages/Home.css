@@ -1,0 +1,15 @@
+.home-section{
+    padding: 15px 30px;
+}
+
+.categories-container {
+    text-align: center;
+    margin-top: 15vh;
+    margin-bottom: 15vh;
+}
+
+.categories-container h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}

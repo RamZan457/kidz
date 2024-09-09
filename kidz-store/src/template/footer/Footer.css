@@ -1,0 +1,60 @@
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-image: url('../../assets/kidz-footersss.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 70vh;
+    background-color: #f9f9f9;
+    border-top: 4px solid orange;
+    margin-top: 50px;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 700;
+    color: red;
+}
+
+.footer-section a {
+    text-decoration: none;
+    color: #555;
+}
+
+.footer-section a:hover {
+    color: orange;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    background-color: orange;
+    color: white;
+}
+
+iframe {
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+}

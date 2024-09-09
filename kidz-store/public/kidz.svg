@@ -1,0 +1,14 @@
+<svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .text {
+        font-family: 'Arial', sans-serif;
+        font-size: 40px;
+        font-weight: bold;
+        fill: #00A1E4;
+        text-anchor: middle;
+      }
+    </style>
+  </defs>
+  <text x="50%" y="50%" dominant-baseline="middle" class="text">Kidz</text>
+</svg>
