@@ -1,4 +1,5 @@
 // src/App.jsx
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './template/header/Header';
 import Footer from './template/footer/Footer';
@@ -6,8 +7,32 @@ import './App.css';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import NotFound from './components/NotFound';
+import axios from 'axios';
+import Cart from './pages/Cart';
 
 const App = () => {
+  const [cart, setCart] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      const cartKey = localStorage.getItem('cartKey');
+      if (cartKey) {
+        const data = {cartKey};
+        await axios.post(window.ajaxLink + '/cart/get-carts', data).then((res) => {
+          if (res.data) {
+            setCart(res.data[0].items);
+            setTotalAmount(res.data[0].totalAmount);
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    };
+    fetchCart();
+  }, []);
+
+
   return (
     <Router>
       <Header />
@@ -18,7 +43,7 @@ const App = () => {
         <Route path="/products" element={<h1>Products Page</h1>} />
         <Route path="/about" element={<h1>About Us Page</h1>} />
         <Route path="/contact" element={<h1>Contact Page</h1>} />
-        <Route path="/cart" element={<h1>Cart Page</h1>} />
+        <Route path="/cart" element={<Cart cart={cart} totalAmount={totalAmount}} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

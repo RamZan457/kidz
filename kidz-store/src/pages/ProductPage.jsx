@@ -13,13 +13,11 @@ const ProductPage = () => {
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         if (sortOption === 'priceAsc') return a.price - b.price;
         if (sortOption === 'priceDesc') return b.price - a.price;
-        if (sortOption === 'sizeAsc') return a.size - b.size;
-        if (sortOption === 'sizeDesc') return b.size - a.size;
         return 0;
     });
     const productsPerPage = 6;
 
-    const [currentProducts, setCurrentProducts] = useState(sortedProducts.slice(0, productsPerPage));
+    const [currentProducts, setCurrentProducts] = useState(sortedProducts.slice(0, productsPerPage));      
 
     return (
         <div className="product-page">
@@ -30,8 +28,6 @@ const ProductPage = () => {
                     <option value="">None</option>
                     <option value="priceAsc">Price (Low to High)</option>
                     <option value="priceDesc">Price (High to Low)</option>
-                    <option value="sizeAsc">Size (Small to Large)</option>
-                    <option value="sizeDesc">Size (Large to Small)</option>
                 </select>
             </div>
 
@@ -43,7 +39,6 @@ const ProductPage = () => {
                         ))}
                     </div>
             ) : (
-                // <h2>No products found</h2>
                 <NotFound />
             )}
             </React.Fragment>
