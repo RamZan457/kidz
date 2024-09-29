@@ -13,7 +13,13 @@ const Header = () => {
 
     useEffect(() => {
         axios.get(window.ajaxLink + '/categories/get-categories')
-            .then(response => setCategories(response.data))
+            .then(response => {
+                setCategories(response.data.categories);
+                let cartKey = localStorage.getItem('cartKey');
+                if (!cartKey) {
+                    localStorage.setItem('cartKey', response.data.cartKey);
+                }
+            })
             .catch(error => console.log('Error fetching categories:', error));
         const handleResize = () => {
             setIsMobile(window.innerWidth < 850);

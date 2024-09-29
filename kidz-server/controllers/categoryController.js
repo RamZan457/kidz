@@ -1,11 +1,19 @@
 // controllers/categoryController.js
+const {encodeKey} = require('../Utils/generateEncoded');
 const Category = require('../models/Category');
 
 // Get all categories
 exports.getCategories = async (req, res) => {
     try {
         const categories = await Category.find();
-        res.json(categories);
+        const nowTime = Date.now() + Math.round(Math.random() * 1000).toString();
+        const cartKey = encodeKey(nowTime);
+
+        const data = {
+            cartKey,
+            categories
+        }
+        res.json(data);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

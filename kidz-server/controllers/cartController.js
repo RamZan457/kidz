@@ -16,12 +16,11 @@ exports.getCarts = async (req, res) => {
 };
 
 exports.createCart = async (req, res) => {
-    const { items, totalAmount} = req.body;
+    const { items, totalAmount, cartKey } = req.body;
     if (!items || !totalAmount) {
         return res.status(400).json({ message: 'Items and total amount are required' });
     }
 
-    cartKey = encodeKey(totalAmount.toString() + new Date().getTime().toString());
     const cart = new Cart({
         items,
         cartKey,
