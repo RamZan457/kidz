@@ -24,7 +24,6 @@
     overflow: hidden;
     width: 100%;
     justify-content: space-evenly;
-    flex-wrap: wrap-reverse;
 }
 
 /* Carousel item */
@@ -32,9 +31,19 @@
     flex-shrink: 0;
     width: 30%;
     /* 30% width for 3 items */
+    min-width: 250px;
     height: 300px;
     perspective: 1000px;
     margin: 0 10px;
+}
+
+/* Carousel Item Quaries */
+@media screen and (max-width: 500px) {
+    .carousel-item{
+        width: 100vw;
+        height: 200px;
+        margin: 0;
+    }
 }
 
 /* Category card */

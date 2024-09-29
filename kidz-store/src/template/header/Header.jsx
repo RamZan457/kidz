@@ -16,7 +16,7 @@ const Header = () => {
             .then(response => setCategories(response.data))
             .catch(error => console.log('Error fetching categories:', error));
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
+            setIsMobile(window.innerWidth < 850);
         };
 
         window.addEventListener('resize', handleResize);

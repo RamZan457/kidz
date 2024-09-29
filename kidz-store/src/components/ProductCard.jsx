@@ -2,11 +2,11 @@
 import PropTypes from 'prop-types';
 import { useState, useContext } from 'react';
 import './ProductCard.css';
-import { cartContext } from '../contextApi/cartContext';
+// import { cartContext } from '../contextApi/cartContext';
 import axios from 'axios';
 
 const ProductCard = ({ product }) => {
-    var { addToCart,cart, totalAmount,addCartKey } = useContext(cartContext);
+    // var { addToCart,cart, totalAmount,addCartKey } = useContext(cartContext);
     const [productSize, setProductSize] = useState(product.size[0]);
     const [productColor, setProductColor] = useState(product.colors[0]);
     const [productQuantity, setProductQuantity] = useState(1);
@@ -29,11 +29,11 @@ const ProductCard = ({ product }) => {
             quantity: productQuantity,
         };
         
-        addToCart(...product, productToAdd);
+        // addToCart(...product, productToAdd);
 
         const data = {
-            items: cart ? cart : [productToAdd],
-            totalAmount: totalAmount
+            items: [productToAdd],
+            totalAmount: productQuantity * product
         };
 
         const cartKey = localStorage.getItem('cartKey');
@@ -41,14 +41,15 @@ const ProductCard = ({ product }) => {
         if (cartKey) {
             data.cartKey = cartKey;
            await axios.put(window.ajaxLink + '/cart/update-cart', { data }).then((res) => {
-                addToCart(res.data.items);
+               // addToCart(res.data.items);
+               console.log(res.data.items);
            }).catch((err) => {
                 console.log(err);
            });
         } else {
             await axios.post(window.ajaxLink + '/cart/create-cart', data).then((res) => {
                 if (res.data) {
-                    addCartKey(res.data.cartKey);
+                    // addCartKey(res.data.cartKey);
                     localStorage.setItem('cartKey', res.data.cartKey);
                 }
             }).catch((err) => {
@@ -124,7 +125,7 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="product-order">
                 <div className="product-quantity">
-                    <div className='icons' onClick={() => handleProductQuantity("add")}> + </div>
+                    <div className={`icons ${productQuantity === 1 ? "disabled" : ""}`} onClick={() => handleProductQuantity("remove")}> - </div>
                     <input
                         type="number"
                         className='quantity'
@@ -134,7 +135,7 @@ const ProductCard = ({ product }) => {
                         min="1"
                         style={{ width: '50px', textAlign: 'center' }}
                     />
-                    <div className={`icons ${productQuantity === 1 ? "disabled" : ""}`} onClick={() => handleProductQuantity("remove")}> - </div>
+                    <div className='icons' onClick={() => handleProductQuantity("add")}> + </div>
                 </div>
                 <button className="category-add-to-cart-btn" onClick={handleAddToCart} >Add to Cart</button>
             </div>

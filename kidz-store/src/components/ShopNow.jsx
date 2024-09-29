@@ -6,7 +6,7 @@ const ShopNow = () => {
         <div className="container">
             <div className="shop-card">
                 <img
-                    src="https://via.placeholder.com/300"
+                    src="https://oneshop.com.pk/wp-content/uploads/2021/01/aaaaaaaa-01.jpg"
                     alt="Outdoor Toys"
                     className="shop-image"
                 />
@@ -14,7 +14,7 @@ const ShopNow = () => {
             </div>
             <div className="shop-card">
                 <img
-                    src="https://via.placeholder.com/300"
+                    src="https://oneshop.com.pk/wp-content/uploads/2021/04/oneshop-card-01.jpg"
                     alt="Art & Craft"
                     className="shop-image"
                 />
@@ -22,7 +22,7 @@ const ShopNow = () => {
             </div>
             <div className="shop-card">
                 <img
-                    src="https://via.placeholder.com/300"
+                    src="https://oneshop.com.pk/wp-content/uploads/2021/01/vvvvv-01.jpg"
                     alt="Building Blocks"
                     className="shop-image"
                 />

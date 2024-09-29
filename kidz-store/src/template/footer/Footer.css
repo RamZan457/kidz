@@ -1,6 +1,7 @@
 .footer-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
     padding: 20px;
     background-image: url('../../assets/kidz-footersss.jpg');
     background-size: cover;
@@ -13,7 +14,6 @@
 }
 
 .footer-section {
-    flex: 1;
     padding: 0 20px;
 }
 

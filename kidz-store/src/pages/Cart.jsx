@@ -7,7 +7,7 @@ const Cart = ({ cart, totalAmount }) => {
       <div>
           <h1>Cart</h1>
           <p>Product Lenght : {cart.length}</p>
-            <p>Total Amount : {totalAmount}</p>
+          <p>Total Amount : {totalAmount}</p>
     </div>
   )
 }
