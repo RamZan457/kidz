@@ -7,8 +7,15 @@ exports.getCarts = async (req, res) => {
         const data = req.body;
         if (data) {
             var cartKey = data.cartKey;
-            const carts = await Cart.find({ cartKey: cartKey });
-            return res.json(carts);
+            var cart = await Cart.findOne({ cartKey: cartKey });
+            if (!cart || cart.length == 0) {
+                console.log("No Cart Found");
+                cart = {
+                    totalAmount: 0,
+                    items: []
+                }
+            }
+            return res.json(cart);
         }
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -17,14 +24,16 @@ exports.getCarts = async (req, res) => {
 
 exports.createCart = async (req, res) => {
     const { items, totalAmount, cartKey } = req.body;
+
     if (!items || !totalAmount) {
         return res.status(400).json({ message: 'Items and total amount are required' });
     }
 
+    await Cart.findOneAndDelete({ cartKey: cartKey });
     const cart = new Cart({
         items,
         cartKey,
-        totalAmount
+        totalAmount,
     });
 
     try {

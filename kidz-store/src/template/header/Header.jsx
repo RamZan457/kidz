@@ -1,13 +1,31 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { products } from '../../pages/api';
 import { useLocation } from 'react-router-dom';
 import './Header.css';
 import axios from 'axios';
+import { FaCartArrowDown } from 'react-icons/fa';
 
 const Header = () => {
     const [categories, setCategories] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [search, setSearch] = useState("");
+    const [searchedProduct, setSearchedProduct] = useState([]);
+
+    // Update searched products whenever search or products change
+    useEffect(() => {
+        if (search.length >= 3) {
+            const filteredProducts = products.filter(product =>
+                product.name.toLowerCase().includes(search.toLowerCase())
+            );
+            setSearchedProduct(filteredProducts);
+        }
+    }, [search]);
+
+    const handleInputChange = (event) => {
+        setSearch(event.target.value);
+    };
 
     const location = useLocation();
 
@@ -45,7 +63,7 @@ const Header = () => {
                         <span>SHOP BY CATEGORY</span>
                         <div className="dropdown-content">
                             {categories.map(category => (
-                                <Link to={`/category/${category.categorySlug}`} key={category.id} className="dropdown-item">
+                                <Link to={`/category/${category.categorySlug}`} key={category.id + Math.random().toString()} className="dropdown-item">
                                     {category.name}
                                 </Link>
                             ))}
@@ -56,7 +74,35 @@ const Header = () => {
                 </nav>
             )}
             <div className="header-actions">
-                <input type="text" placeholder="Search..." className="search-bar" />
+                <div className="dropdown">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        className="search-bar"
+                        value={search}
+                        onChange={handleInputChange}
+                    />
+                    {searchedProduct && search.length >= 3 && (
+                        <div className="dropdown-content search-content">
+                            {searchedProduct.map((product, index) => (
+                                <div key={index} className="dropdown-item search-product">
+                                    <p>{product.name}</p>
+                                    <p>
+                                        <sup className='discounted-price'>${(Math.ceil((product.price + 10) * 100) / 100).toFixed(2)}</sup>
+                                        <br />
+                                        ${product.price}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <Link to="/cart" className={location.pathname == "/cart" ? " nav-link active" : "nav-link"}>
+                    <div className="tooltip">
+                        <FaCartArrowDown style={{ fontSize: "20px" }} />
+                        <span className="tooltiptext">{2}</span>
+                    </div>
+                </Link>
                 {isMobile && <div className="hamburger-menu" onClick={toggleMenu}>&#9776;</div>}
             </div>
             {isMobile && menuOpen && (
@@ -66,7 +112,7 @@ const Header = () => {
                         <span>SHOP BY CATEGORY</span>
                         <div className="dropdown-content">
                             {categories.map(category => (
-                                <Link to={`/category/${category.name}`} key={category.id} className="dropdown-item" onClick={toggleMenu}>
+                                <Link to={`/category/${category.name}`} key={category.id + Math.random().toString()} className="dropdown-item" onClick={toggleMenu}>
                                     {category.name}
                                 </Link>
                             ))}

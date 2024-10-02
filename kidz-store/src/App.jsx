@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './template/header/Header';
 import Footer from './template/footer/Footer';
@@ -18,11 +18,12 @@ const App = () => {
     const fetchCart = async () => {
       const cartKey = localStorage.getItem('cartKey');
       if (cartKey) {
-        const data = {cartKey};
+        const data = { cartKey };
         await axios.post(window.ajaxLink + '/cart/get-carts', data).then((res) => {
           if (res.data) {
-            setCart(res.data[0].items);
-            setTotalAmount(res.data[0].totalAmount);
+            setCart(res.data.items);
+            localStorage.setItem('cart', JSON.stringify(res.data.items));
+            setTotalAmount(res.data.totalAmount);
           }
         }).catch((err) => {
           console.log(err);
@@ -35,7 +36,7 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
+      <Header cartLength={cart.length} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/category/:categorySlug' element={<ProductPage />} />

@@ -7,7 +7,7 @@ connectDB();
 
 const seedCategories = async () => {
     const categories = [
-        { name: 'Clothing', categorySlug: 'clothing' , icon: 'https://via.placeholder.com/150', color: '#FFD700' },
+        { name: 'Clothing', categorySlug: 'clothing', icon: 'https://via.placeholder.com/150', color: '#FFD700' },
         { name: 'Toys', categorySlug: 'toys', icon: 'https://via.placeholder.com/150', color: '#FF69B4' },
         { name: 'Books', categorySlug: 'books', icon: 'https://via.placeholder.com/150', color: '#87CEEB' },
         { name: 'Shoes', categorySlug: 'shoes', icon: 'https://via.placeholder.com/150', color: '#FF6347' },

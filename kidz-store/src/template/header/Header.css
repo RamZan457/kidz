@@ -5,7 +5,8 @@
     justify-content: space-around;
     align-items: center;
     padding: 10px 20px;
-    position: relative;
+    position: sticky;
+    top: 10px;
     z-index: 1000;
 }
 
@@ -62,6 +63,10 @@
     display: block;
 }
 
+.dropdown .search-content {
+    display: block;
+}
+
 .dropdown-item {
     color: #333333;
     padding: 8px 12px;
@@ -72,8 +77,8 @@
 }
 
 .dropdown-item:hover {
-    background-color: #FFC107;
-    color: #FFFFFF;
+    background-color: #FFC107 !important;
+    color: #FFFFFF !important;
 }
 
 .header-actions {
@@ -96,22 +101,10 @@
     outline: none;
 }
 
-.search-bar+.cart-icon {
+.search-bar {
     position: relative;
 }
 
-.cart-icon {
-    color: #FFD700;
-    font-size: 24px;
-    border: 2px solid #FF851B;
-    padding: 5px;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
-}
-
-.cart-icon:hover {
-    background-color: #FF851B;
-}
 
 .hamburger-menu {
     font-size: 24px;
@@ -172,4 +165,41 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.search-product {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+
+.discounted-price {
+    text-decoration: line-through;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    width: 20px;
+    height: 20px;
+    background-color: #000000;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    padding: 3px;
+    position: absolute;
+    z-index: 1;
+    bottom: 55%;
+    right: -132%;
+    margin-left: -60px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.nav-link:hover .tooltiptext {
+    background-color: #FFC107;
 }

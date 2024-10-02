@@ -1,5 +1,5 @@
 // controllers/categoryController.js
-const {encodeKey} = require('../Utils/generateEncoded');
+const { encodeKey } = require('../Utils/generateEncoded');
 const Category = require('../models/Category');
 
 // Get all categories

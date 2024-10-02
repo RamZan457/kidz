@@ -13,7 +13,7 @@ const Carousel = ({ images, interval = 5000 }) => {
         return () => {
             clearInterval(autoPlayInterval);
         };
-    }, [interval]);
+    }, [interval, activeIndex]);
 
     const nextSlide = () => {
         setActiveIndex((prevIndex) =>

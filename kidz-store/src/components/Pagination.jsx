@@ -10,7 +10,7 @@ const Pagination = ({ products, setCurrentProducts, productsPerPage }) => {
 
     useEffect(() => {
         setCurrentProducts(products.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage));
-    }, [currentPage, products, setCurrentProducts, productsPerPage]);
+    }, [currentPage, setCurrentProducts, productsPerPage]);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage(currentPage + 1);
