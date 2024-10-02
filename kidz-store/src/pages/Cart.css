@@ -1,0 +1,9 @@
+.cart-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-container {
+    width: 90vw;
+}

@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { products } from '../../pages/api';
 import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Header.css';
 import axios from 'axios';
 import { FaCartArrowDown } from 'react-icons/fa';
 
-const Header = () => {
+const Header = ({ cartLength }) => {
     const [categories, setCategories] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -100,7 +101,7 @@ const Header = () => {
                 <Link to="/cart" className={location.pathname == "/cart" ? " nav-link active" : "nav-link"}>
                     <div className="tooltip">
                         <FaCartArrowDown style={{ fontSize: "20px" }} />
-                        <span className="tooltiptext">{2}</span>
+                        <span className="tooltiptext">{cartLength}</span>
                     </div>
                 </Link>
                 {isMobile && <div className="hamburger-menu" onClick={toggleMenu}>&#9776;</div>}
@@ -131,3 +132,7 @@ const Header = () => {
 };
 
 export default Header;
+
+Header.propTypes = {
+    cartLength: PropTypes.number.isRequired
+};

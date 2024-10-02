@@ -59,7 +59,7 @@ exports.deleteCart = async (req, res) => {
 }
 
 exports.updateCart = async (req, res) => {
-    const { items, totalAmount, cartKey } = req.body.data;
+    const { items, totalAmount, cartKey } = req.body;
     if (!items || !totalAmount || !cartKey) {
         return res.status(400).json({ message: 'Items, total amount and cart key are required' });
     }

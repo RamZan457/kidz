@@ -1,0 +1,28 @@
+/* --- .breadcrumb-container --- */
+.breadcrumb-container {
+    margin-bottom: 5rem;
+}
+
+.breadcrumb-container .breadcrumb {
+    color: #7d7d7d;
+}
+
+.breadcrumb-container .breadcrumb li {
+    float: left;
+    padding: 0 6px;
+    list-style: none;
+}
+
+.breadcrumb-container .breadcrumb li:first-child {
+    padding-left: 2px;
+}
+
+.breadcrumb-container .breadcrumb li:not(:last-child)::after {
+    content: " \276f";
+    padding-left: 8px;
+}
+
+.breadcrumb-container .count {
+    float: right;
+    color: #333333;
+}

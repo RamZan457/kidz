@@ -27,7 +27,12 @@ const ProductCard = ({ product }) => {
 
         const productToAdd = {
             id: product.id,
+            cartItemId: productSize + productColor + productQuantity,
             name: product.name,
+            description: product.description,
+            image: product.image,
+            weight: product.weight,
+            perPiecePrice: product.price,
             price: product.price * productQuantity,
             size: productSize,
             color: productColor,
@@ -36,11 +41,21 @@ const ProductCard = ({ product }) => {
 
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        var updatedCart;
-        if (existingCart && existingCart.length > 0) {
-            updatedCart = [...existingCart, productToAdd];
+        const existingProductIndex = existingCart.findIndex(item =>
+            item.id === productToAdd.id &&
+            item.color === productToAdd.color &&
+            item.size === productToAdd.size
+        );
+
+        let updatedCart;
+        if (existingProductIndex !== -1) {
+            const existingProduct = existingCart[existingProductIndex];
+            existingProduct.quantity += productQuantity;
+            existingProduct.price = product.price * existingProduct.quantity;
+            updatedCart = [...existingCart];
+            updatedCart[existingProductIndex] = existingProduct;
         } else {
-            updatedCart = [productToAdd];
+            updatedCart = [...existingCart, productToAdd];
         }
 
         const totalAmount = updatedCart.reduce((total, item) => total + item.price, 0);
@@ -71,6 +86,7 @@ const ProductCard = ({ product }) => {
             }, 5000);
         }
     };
+
 
     const handleProductQuantity = (action) => {
         setProductQuantity(prevQuantity => {
