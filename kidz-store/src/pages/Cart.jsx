@@ -32,7 +32,7 @@ const Cart = ({ cart, totalAmount }) => {
       }
     };
     fetchCart();
-  }, []);
+  }, [cartKey, setItemLength]);
 
   const handleUpdateQuantity = async (cartItemId, event) => {
     setMessage('');
