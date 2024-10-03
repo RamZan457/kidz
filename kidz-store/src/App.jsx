@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './template/header/Header';
 import Footer from './template/footer/Footer';
@@ -9,10 +9,13 @@ import ProductPage from './pages/ProductPage';
 import NotFound from './components/NotFound';
 import axios from 'axios';
 import Cart from './pages/Cart';
+import { CartLength } from './context/CartLengthContext';
 
 const App = () => {
   const [cart, setCart] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
+
+  const { setItemLength } = useContext(CartLength);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -22,6 +25,7 @@ const App = () => {
         await axios.post(window.ajaxLink + '/cart/get-carts', data).then((res) => {
           if (res.data) {
             setCart(res.data.items);
+            setItemLength(res.data.items.length);
             localStorage.setItem('cart', JSON.stringify(res.data.items));
             setTotalAmount(res.data.totalAmount);
           }
@@ -31,12 +35,12 @@ const App = () => {
       }
     };
     fetchCart();
-  }, []);
+  }, [setItemLength]);
 
 
   return (
     <Router>
-      <Header cartLength={cart.length} />
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path='/category/:categorySlug' element={<ProductPage />} />

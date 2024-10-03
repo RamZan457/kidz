@@ -18,8 +18,28 @@ function ProductList({ cartItems, onChangeProductQuantity, onRemoveProduct }) {
                                     <a href="#">{product.name}</a>
                                 </div>
                                 <div className="description">{product.description}</div>
+                                <div className="category-product-info">
+                                    <span className="product-weight">Weight: {product.weight}</span>
+                                    <div className='product-sizes'>
 
-                                <div className="price">${product.price}</div>
+                                        {(product.size === "One size" || product.size === "O") ?
+                                            <span className="product-size">One size</span>
+                                            :
+                                            <>
+                                                Size: <div className='size-box'>
+                                                    {product.size}
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                    <div className="product-sizes">
+                                        Colors:
+                                        <div className='size-box'
+                                            style={{ backgroundColor: product.color, borderRadius: "50%" }}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="price">${product.price} <sup className='discounted-price'>${(product.perPiecePrice + 10) * product.quantity}</sup></div>
                             </div>
                         </div>
 

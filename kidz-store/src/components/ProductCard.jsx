@@ -1,10 +1,11 @@
 // src/components/ProductCard.jsx
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import './ProductCard.css';
 import axios from 'axios';
 import Alert from './Alert';
 import { FaCartPlus } from 'react-icons/fa';
+import { CartLength } from '../context/CartLengthContext';
 
 const ProductCard = ({ product }) => {
     const [productSize, setProductSize] = useState(product.size[0]);
@@ -12,6 +13,7 @@ const ProductCard = ({ product }) => {
     const [productQuantity, setProductQuantity] = useState(1);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('');
+    const { setItemLength } = useContext(CartLength);
 
     const handleProductSize = (size) => {
         setProductSize(size);
@@ -72,6 +74,7 @@ const ProductCard = ({ product }) => {
                         setMessageType('success');
                     }, 500);
                     localStorage.setItem('cart', JSON.stringify(updatedCart));
+                    setItemLength(updatedCart.length);
                 }
             } catch (err) {
                 console.log(err);

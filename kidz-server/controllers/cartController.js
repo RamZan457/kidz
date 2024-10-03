@@ -46,12 +46,10 @@ exports.createCart = async (req, res) => {
 
 exports.deleteCart = async (req, res) => {
     try {
-        const cart = await Cart.findById(req.params.id);
-        if (!cart) {
-            return res.status(404).json({ message: 'Cart not found' });
+        if (!req.body.cartKey) {
+            return res.status(400).json({ message: 'Cart key are required' });
         }
-
-        await cart.remove();
+        await Cart.findOneAndDelete({ cartKey: req.body.cartKey });
         res.json({ message: 'Cart deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });

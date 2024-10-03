@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { products } from '../../pages/api';
-import { useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
 import axios from 'axios';
 import { FaCartArrowDown } from 'react-icons/fa';
+import { CartLength } from '../../context/CartLengthContext';
 
-const Header = ({ cartLength }) => {
+const Header = () => {
     const [categories, setCategories] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [search, setSearch] = useState("");
     const [searchedProduct, setSearchedProduct] = useState([]);
+    const { itemLength } = useContext(CartLength);
 
     // Update searched products whenever search or products change
     useEffect(() => {
@@ -29,6 +30,7 @@ const Header = ({ cartLength }) => {
     };
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(window.ajaxLink + '/categories/get-categories')
@@ -56,7 +58,7 @@ const Header = ({ cartLength }) => {
 
     return (
         <header className="header">
-            <div className="logo">Kidz</div>
+            <div className="logo" onClick={() => navigate("/")}>Kidz</div>
             {!isMobile && (
                 <nav className="navigation">
                     <Link to="/" className={location.pathname == "/" ? " nav-link active" : "nav-link"}>HOME</Link>
@@ -101,7 +103,7 @@ const Header = ({ cartLength }) => {
                 <Link to="/cart" className={location.pathname == "/cart" ? " nav-link active" : "nav-link"}>
                     <div className="tooltip">
                         <FaCartArrowDown style={{ fontSize: "20px" }} />
-                        <span className="tooltiptext">{cartLength}</span>
+                        <span className="tooltiptext">{itemLength}</span>
                     </div>
                 </Link>
                 {isMobile && <div className="hamburger-menu" onClick={toggleMenu}>&#9776;</div>}
@@ -132,7 +134,3 @@ const Header = ({ cartLength }) => {
 };
 
 export default Header;
-
-Header.propTypes = {
-    cartLength: PropTypes.number.isRequired
-};
