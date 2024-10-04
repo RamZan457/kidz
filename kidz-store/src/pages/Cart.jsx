@@ -167,7 +167,7 @@ const Cart = ({ cart, totalAmount }) => {
         if (totalDiscount === 0) {
           setTotal(total - (totalPrice * parseFloat(PROMOTIONS[i].discount.replace("%", ""))) / 100);
         } else {
-          setDiscountError('Promotion code is already entered!');
+          setDiscountError('One Promotion code is already entered!');
         }
         return;
       }
