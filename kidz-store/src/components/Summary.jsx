@@ -4,14 +4,15 @@ import './Summary.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Summary({ total, subTotal, discount, tax, onEnterPromoCode, checkPromoCode }) {
+function Summary({ total, subTotal, discountError, discount, tax, onEnterPromoCode, checkPromoCode }) {
 
     return (
-        <section>
+        <section className='summary-container'>
             <div className="promotion">
                 <label htmlFor="promo-code">Have A Promo Code?</label>
-                <input type="text" onChange={onEnterPromoCode} />
+                <input type="text" onKeyDown={onEnterPromoCode} onChange={onEnterPromoCode} />
                 <button type="button" onClick={checkPromoCode} />
+                <p className="discount-error">{discountError}</p>
             </div>
 
             <div className="summary">
@@ -31,10 +32,9 @@ function Summary({ total, subTotal, discount, tax, onEnterPromoCode, checkPromoC
                         Total <span>Rs.{total}</span>
                     </li>
                 </ul>
-            </div>
-
-            <div className="checkout">
-                <button type="button">Check Out</button>
+                <div className="checkout">
+                    <button type="button">Check Out</button>
+                </div>
             </div>
         </section>
     );

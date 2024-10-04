@@ -16,10 +16,9 @@ const Cart = ({ cart, totalAmount }) => {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
   const { setItemLength } = useContext(CartLength);
-
+  const [discountError, setDiscountError] = useState('');
   const [promoCode, setPromoCode] = useState("");
   const [totalDiscount, setTotalDiscount] = useState(0);
-  const discount = (totalPrice * totalDiscount) / 100;
 
   const PROMOTIONS = [
     {
@@ -78,7 +77,7 @@ const Cart = ({ cart, totalAmount }) => {
     setTotalPrice(newTotal);
     setTotal(newTotal + deliveryTax);
 
-    const data = { cartKey, totalAmount: newTotal + deliveryTax, items: updatedItems, deliveryTax: deliveryTax };
+    const data = { cartKey, totalAmount: newTotal, items: updatedItems, deliveryTax: deliveryTax };
 
     try {
       const res = await axios.put(window.ajaxLink + '/cart/update-cart', data);
@@ -108,7 +107,7 @@ const Cart = ({ cart, totalAmount }) => {
     setTotalPrice(newTotal);
     setTotal(newTotal + deliveryTax);
 
-    const data = { cartKey, totalAmount: newTotal + deliveryTax, items: updatedItems, deliveryTax, totalDiscount };
+    const data = { cartKey, totalAmount: newTotal, items: updatedItems, deliveryTax, totalDiscount };
     if (updatedItems.length == 0 || newTotal == 0) {
       try {
         const res = await axios.post(window.ajaxLink + '/cart/delete-cart', data);
@@ -150,17 +149,36 @@ const Cart = ({ cart, totalAmount }) => {
 
   const onEnterPromoCode = (event) => {
     setPromoCode(event.target.value);
+    if (event.target.value.length === 0) {
+      setDiscountError('');
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      checkPromoCode();
+    }
   };
 
   const checkPromoCode = () => {
     for (var i = 0; i < PROMOTIONS.length; i++) {
       if (promoCode === PROMOTIONS[i].code) {
-        setTotalDiscount(parseFloat(PROMOTIONS[i].discount.replace("%", "")));
+        setTotalDiscount((totalPrice * parseFloat(PROMOTIONS[i].discount.replace("%", ""))) / 100);
+        setDiscountError('');
+        if (totalDiscount === 0) {
+          setTotal(total - (totalPrice * parseFloat(PROMOTIONS[i].discount.replace("%", ""))) / 100);
+        } else {
+          setDiscountError('Promotion code is already entered!');
+        }
         return;
       }
     }
 
-    alert("Sorry, the Promotional code you entered is not valid!");
+
+    setDiscountError("Sorry, the Promotional code you entered is not valid!");
+    if (promoCode.length > 2) {
+      setTotal(total + totalDiscount);
+      setTotalDiscount(0);
+    }
   };
 
   return (
@@ -180,10 +198,11 @@ const Cart = ({ cart, totalAmount }) => {
               </>
             }
             <Summary
+              discountError={discountError}
               total={total}
               setTotal={setTotal}
               subTotal={totalPrice}
-              discount={discount}
+              discount={totalDiscount}
               tax={deliveryTax}
               onEnterPromoCode={onEnterPromoCode}
               checkPromoCode={checkPromoCode}

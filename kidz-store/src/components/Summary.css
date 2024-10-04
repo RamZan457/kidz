@@ -1,23 +1,27 @@
 /* --- SUMMARY --- */
-.promotion,
-.summary,
-.checkout {
-    float: left;
-    width: 100%;
+.summary-container {
+    display: flex;
+    justify-content: space-evenly;
+    /* width: 90vw; */
     margin-top: 1.5rem;
 }
 
+.promotion,
+.summary {
+    width: 50%;
+    padding: 10px;
+}
+
 .promotion>label {
-    float: left;
     width: 100%;
+    display: block;
     margin-bottom: 1rem;
 }
 
 .promotion>input {
-    float: left;
     width: 65%;
     font-size: 1rem;
-    padding: 0.5rem 0 0.5rem 1.8rem;
+    padding: 0.6rem 0 0.6rem 1.8rem;
     border: 2px solid #16cc9b;
     border-radius: 2rem 0 0 2rem;
 }
@@ -27,10 +31,10 @@
 }
 
 .promotion>button {
-    float: left;
     width: 20%;
-    padding: 0.5rem 0;
+    padding: 0.41rem 0 0.6rem 1.8rem;
     border-radius: 0 2rem 2rem 0;
+    border-color: #f58551;
 }
 
 .promotion:hover>button {
@@ -38,9 +42,17 @@
     background-color: #f58551;
 }
 
+.promotion>button:active {
+    outline: none;
+}
+
 .promotion>button::after {
     content: "\276f";
     font-size: 1rem;
+}
+
+.promotion>button:focus {
+    outline: 0 !important;
 }
 
 .summary {
@@ -82,9 +94,22 @@
 }
 
 /* --- SMALL SCREEN --- */
-@media all and (max-width: 599px) {
+@media all and (max-width: 690px) {
     .thumbnail img {
         display: none;
+    }
+
+    .summary-container {
+        flex-direction: column;
+    }
+
+    .summary,
+    .promotion {
+        width: 100%;
+    }
+
+    .cart-col.right {
+        position: static;
     }
 
     .quantity>input {
@@ -101,28 +126,13 @@
 
 /* --- MEDIUM & LARGE SCREEN --- */
 @media all and (min-width: 600px) {
-    .cart-container {
-        width: 75%;
-        max-width: 960px;
+    .summary-container {
+        max-width: 90vw;
         font-size: 14px;
-    }
-
-    .thumbnail,
-    .detail {
-        float: left;
-    }
-
-    .thumbnail {
-        width: 35%;
     }
 
     .detail {
         width: 65%;
-    }
-
-    .promotion,
-    .summary {
-        width: 50%;
     }
 
     .checkout {
@@ -137,7 +147,7 @@
 
 /* --- LARGE SCREEN --- */
 @media all and (min-width: 992px) {
-    .cart-container {
+    .summary-container {
         font-size: 16px;
     }
 }
