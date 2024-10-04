@@ -39,7 +39,7 @@ function ProductList({ cartItems, onChangeProductQuantity, onRemoveProduct }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="price">${product.price} <sup className='discounted-price'>${(product.perPiecePrice + 10) * product.quantity}</sup></div>
+                                <div className="price">Rs.{product.price} <sup className='discounted-price'>Rs.{(product.perPiecePrice + 10) * product.quantity}</sup></div>
                             </div>
                         </div>
 

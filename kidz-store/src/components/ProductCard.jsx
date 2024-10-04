@@ -65,7 +65,7 @@ const ProductCard = ({ product }) => {
         const cartKey = localStorage.getItem('cartKey');
 
         if (cartKey) {
-            const data = { cartKey, totalAmount, items: updatedCart };
+            const data = { cartKey, totalAmount, items: updatedCart, deliveryTax: 200, discount: "0%" };
             try {
                 const res = await axios.post(window.ajaxLink + '/cart/create-cart', data);
                 if (res.data) {
@@ -130,8 +130,8 @@ const ProductCard = ({ product }) => {
                     <p className="category-product-description">{product.description}</p>
                     <div className="category-product-info">
                         <span className="product-price">
-                            ${product.price}
-                            <sup className='discounted-price'>${(Math.ceil((product.price + 10) * 100) / 100).toFixed(2)}</sup>
+                            Rs.{product.price}
+                            <sup className='discounted-price'>Rs.{(Math.ceil((product.price + 10) * 100) / 100).toFixed(2)}</sup>
                         </span>
                         <span className="product-weight">Weight: {product.weight}</span>
                     </div>

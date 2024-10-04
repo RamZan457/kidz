@@ -23,7 +23,7 @@ exports.getCarts = async (req, res) => {
 };
 
 exports.createCart = async (req, res) => {
-    const { items, totalAmount, cartKey } = req.body;
+    const { items, totalAmount, cartKey, totalDiscount, deliveryTax } = req.body;
 
     if (!items || !totalAmount) {
         return res.status(400).json({ message: 'Items and total amount are required' });
@@ -34,6 +34,8 @@ exports.createCart = async (req, res) => {
         items,
         cartKey,
         totalAmount,
+        totalDiscount,
+        deliveryTax
     });
 
     try {
@@ -57,12 +59,12 @@ exports.deleteCart = async (req, res) => {
 }
 
 exports.updateCart = async (req, res) => {
-    const { items, totalAmount, cartKey } = req.body;
+    const { items, totalAmount, cartKey, totalDiscount, deliveryTax } = req.body;
     if (!items || !totalAmount || !cartKey) {
         return res.status(400).json({ message: 'Items, total amount and cart key are required' });
     }
     try {
-        const cart = await Cart.findOneAndUpdate({ cartKey: cartKey }, { items, totalAmount, cartKey }, { new: true });
+        const cart = await Cart.findOneAndUpdate({ cartKey: cartKey }, { items, totalAmount, cartKey, totalDiscount, deliveryTax }, { new: true });
         if (!cart) {
             return res.status(404).json({ message: 'Cart not found' });
         }

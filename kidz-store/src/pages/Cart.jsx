@@ -6,14 +6,36 @@ import './Cart.css';
 import ProductList from '../components/ProductList';
 import Alert from "../components/Alert";
 import { CartLength } from '../context/CartLengthContext';
+import Summary from '../components/Summary';
 
 const Cart = ({ cart, totalAmount }) => {
   const [cartItems, setCartItems] = useState(cart);
-  const [totalPrice, setTotalPrice] = useState(totalAmount);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [total, setTotal] = useState(totalAmount);
   const cartKey = localStorage.getItem('cartKey');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
   const { setItemLength } = useContext(CartLength);
+
+  const [promoCode, setPromoCode] = useState("");
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const discount = (totalPrice * totalDiscount) / 100;
+
+  const PROMOTIONS = [
+    {
+      code: "SUMMER",
+      discount: "50%"
+    },
+    {
+      code: "AUTUMN",
+      discount: "40%"
+    },
+    {
+      code: "WINTER",
+      discount: "30%"
+    }
+  ];
+  const [deliveryTax, setDeliveryTax] = useState(200);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -24,7 +46,9 @@ const Cart = ({ cart, totalAmount }) => {
             setCartItems(res.data.items);
             localStorage.setItem('cart', JSON.stringify(res.data.items));
             setItemLength(res.data.items.length);
+            setTotal(res.data.totalAmount + res.data.deliveryTax);
             setTotalPrice(res.data.totalAmount);
+            setDeliveryTax(res.data.deliveryTax);
           }
         }).catch((err) => {
           console.log(err);
@@ -32,7 +56,7 @@ const Cart = ({ cart, totalAmount }) => {
       }
     };
     fetchCart();
-  }, [cartKey, setItemLength]);
+  }, [cartKey, setItemLength, deliveryTax]);
 
   const handleUpdateQuantity = async (cartItemId, event) => {
     setMessage('');
@@ -52,8 +76,9 @@ const Cart = ({ cart, totalAmount }) => {
     const newTotal = updatedItems.reduce((acc, item) => acc + item.quantity * item.perPiecePrice, 0);
     setCartItems(updatedItems);
     setTotalPrice(newTotal);
+    setTotal(newTotal + deliveryTax);
 
-    const data = { cartKey, totalAmount: newTotal, items: updatedItems };
+    const data = { cartKey, totalAmount: newTotal + deliveryTax, items: updatedItems, deliveryTax: deliveryTax };
 
     try {
       const res = await axios.put(window.ajaxLink + '/cart/update-cart', data);
@@ -81,7 +106,9 @@ const Cart = ({ cart, totalAmount }) => {
     const newTotal = updatedItems.reduce((acc, item) => acc + item.quantity * item.perPiecePrice, 0);
     setCartItems(updatedItems);
     setTotalPrice(newTotal);
-    const data = { cartKey, totalAmount: newTotal, items: updatedItems };
+    setTotal(newTotal + deliveryTax);
+
+    const data = { cartKey, totalAmount: newTotal + deliveryTax, items: updatedItems, deliveryTax, totalDiscount };
     if (updatedItems.length == 0 || newTotal == 0) {
       try {
         const res = await axios.post(window.ajaxLink + '/cart/delete-cart', data);
@@ -121,10 +148,20 @@ const Cart = ({ cart, totalAmount }) => {
     }
   };
 
-  const [promoCode, setPromoCode] = useState("");
-  const [discountPercent, setDiscountPercent] = useState(0);
+  const onEnterPromoCode = (event) => {
+    setPromoCode(event.target.value);
+  };
 
+  const checkPromoCode = () => {
+    for (var i = 0; i < PROMOTIONS.length; i++) {
+      if (promoCode === PROMOTIONS[i].code) {
+        setTotalDiscount(parseFloat(PROMOTIONS[i].discount.replace("%", "")));
+        return;
+      }
+    }
 
+    alert("Sorry, the Promotional code you entered is not valid!");
+  };
 
   return (
     <div className='cart-main-container'>
@@ -142,6 +179,15 @@ const Cart = ({ cart, totalAmount }) => {
                 <Alert message={message} type={messageType} />
               </>
             }
+            <Summary
+              total={total}
+              setTotal={setTotal}
+              subTotal={totalPrice}
+              discount={discount}
+              tax={deliveryTax}
+              onEnterPromoCode={onEnterPromoCode}
+              checkPromoCode={checkPromoCode}
+            />
           </>
         ) : (
           <div className="empty-product">
@@ -149,9 +195,6 @@ const Cart = ({ cart, totalAmount }) => {
             {/* <button onClick={() => setProducts(PRODUCTS)}>Shop Now</button> */}
           </div>
         )}
-        < div className="cart-summary">
-          <h3>Total: ${totalPrice}</h3>
-        </div>
       </div>
     </div >
   );

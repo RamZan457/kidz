@@ -91,9 +91,9 @@ const Header = () => {
                                 <div key={index} className="dropdown-item search-product">
                                     <p>{product.name}</p>
                                     <p>
-                                        <sup className='discounted-price'>${(Math.ceil((product.price + 10) * 100) / 100).toFixed(2)}</sup>
+                                        <sup className='discounted-price'>Rs.{(Math.ceil((product.price + 10) * 100) / 100).toFixed(2)}</sup>
                                         <br />
-                                        ${product.price}
+                                        Rs.{product.price}
                                     </p>
                                 </div>
                             ))}
