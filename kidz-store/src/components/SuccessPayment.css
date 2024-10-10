@@ -1,0 +1,89 @@
+.payment_row {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    width: 90%;
+}
+
+.payment_col {
+    flex: 0 0 40%;
+}
+
+.payment_message-box {
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    padding: 45px;
+    width: 100%;
+    text-align: center;
+    margin: 40px auto;
+}
+
+.payment_success {
+    border-bottom: solid 4px #28a745;
+}
+
+.payment_failed {
+    border-bottom: solid 4px red !important;
+}
+
+.payment_failed .icon {
+    color: red !important;
+}
+
+.payment_success .icon {
+    font-size: 55px;
+    color: #28a745;
+}
+
+.payment_success h2 {
+    margin-bottom: 12px;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 10px;
+}
+
+.payment_success p {
+    margin-bottom: 0;
+    font-size: 18px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px;
+    padding: 10px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}

@@ -4,7 +4,7 @@ import './Summary.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Summary({ total, subTotal, discountError, discount, tax, onEnterPromoCode, checkPromoCode }) {
+function Summary({ total, subTotal, discountError, discount, tax, onEnterPromoCode, checkPromoCode, handleCheckOut }) {
 
     return (
         <section className='summary-container'>
@@ -33,7 +33,7 @@ function Summary({ total, subTotal, discountError, discount, tax, onEnterPromoCo
                     </li>
                 </ul>
                 <div className="checkout">
-                    <button type="button">Check Out</button>
+                    <button type="button" onClick={handleCheckOut}>Check Out</button>
                 </div>
             </div>
         </section>

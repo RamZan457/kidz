@@ -10,6 +10,8 @@ import NotFound from './components/NotFound';
 import axios from 'axios';
 import Cart from './pages/Cart';
 import { CartLength } from './context/CartLengthContext';
+import SuccessPayment from './components/SuccessPayment';
+import FailedPayment from './components/FailedPayment';
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -49,6 +51,8 @@ const App = () => {
         <Route path="/about" element={<h1>About Us Page</h1>} />
         <Route path="/contact" element={<h1>Contact Page</h1>} />
         <Route path="/cart" element={<Cart cart={cart} totalAmount={totalAmount} />} />
+        <Route path='/checkout/success' element={<SuccessPayment />} />
+        <Route path='/checkout/failed' element={<FailedPayment />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

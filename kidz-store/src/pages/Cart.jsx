@@ -7,6 +7,8 @@ import ProductList from '../components/ProductList';
 import Alert from "../components/Alert";
 import { CartLength } from '../context/CartLengthContext';
 import Summary from '../components/Summary';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 const Cart = ({ cart, totalAmount }) => {
   const [cartItems, setCartItems] = useState(cart);
@@ -181,6 +183,33 @@ const Cart = ({ cart, totalAmount }) => {
     }
   };
 
+  const apiKey = import.meta.env.VITE_STRIPE_API_KEY;
+  // console.log(apiKey, "apiKey");
+
+  const handleCheckOut = async () => {
+    const stripe = await loadStripe(apiKey);
+
+    const data = {
+      cartKey: cartKey
+    }
+    await axios.post(window.ajaxLink + '/checkout/create-checkout-session', data)
+      .then((res) => {
+        if (res.data) {
+          console.log(res.data);
+          const result = stripe.redirectToCheckout({
+            sessionId: res.data.id
+          })
+
+          console.log(result);
+
+        }
+      }).catch((error) => {
+        console.log(error);
+      })
+  }
+
+
+
   return (
     <div className='cart-main-container'>
       <div className="cart-container">
@@ -198,6 +227,7 @@ const Cart = ({ cart, totalAmount }) => {
               </>
             }
             <Summary
+              handleCheckOut={handleCheckOut}
               discountError={discountError}
               total={total}
               setTotal={setTotal}

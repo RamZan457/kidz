@@ -6,6 +6,8 @@ const connectDB = require('./Utils/configDB');
 const loggerMiddleware = require('./Utils/loggerMiddleware');
 const categoryRoutes = require('./routes/categoryRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
+require('dotenv').config()
 
 const app = express();
 connectDB();
@@ -17,6 +19,6 @@ app.use(bodyParser.json());
 // Use the app routes
 app.use('/categories', categoryRoutes);
 app.use('/cart', cartRoutes);
+app.use('/checkout', checkoutRoutes);
 
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));

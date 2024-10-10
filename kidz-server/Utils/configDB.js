@@ -1,10 +1,11 @@
 // Utils/configDB.js
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 // Connect to MongoDB
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/Kidz');
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log('MongoDB Connected...');
     } catch (err) {
         console.error('Error connecting to MongoDB:', err.message);
