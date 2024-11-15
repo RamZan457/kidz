@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductCard from '../components/ProductCard';
 import { useParams } from 'react-router-dom';
 import { products } from './api';
@@ -8,16 +8,51 @@ import NotFound from "../components/NotFound";
 
 const ProductPage = () => {
     const { categorySlug } = useParams();
-    const filteredProducts = products.filter(product => product.categorySlug === categorySlug);
+    const [sortedProducts, setSortedProducts] = useState([]);
     const [sortOption, setSortOption] = useState('');
-    const sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (sortOption === 'priceAsc') return a.price - b.price;
-        if (sortOption === 'priceDesc') return b.price - a.price;
-        return 0;
-    });
-    const productsPerPage = 6;
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const [currentProducts, setCurrentProducts] = useState(sortedProducts.slice(0, productsPerPage));      
+    const fetchProducts = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+
+            const filteredProducts = products.filter(product => product.categorySlug === categorySlug);
+
+            const sorted = [...filteredProducts].sort((a, b) => {
+                if (sortOption === 'priceAsc') return a.price - b.price;
+                if (sortOption === 'priceDesc') return b.price - a.price;
+                return 0;
+            });
+
+            setSortedProducts(sorted);
+        } catch (error) {
+            setError('Error fetching products');
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, [categorySlug, sortOption]);
+
+    const productsPerPage = 6;
+    const [currentProducts, setCurrentProducts] = useState([]);
+
+    useEffect(() => {
+        setCurrentProducts(sortedProducts.slice(0, productsPerPage));
+    }, [sortedProducts]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="product-page">
@@ -32,18 +67,22 @@ const ProductPage = () => {
             </div>
 
             <React.Fragment>
-            {currentProducts.length > 0 ? (
+                {currentProducts.length > 0 && sortedProducts.length > 0 ? (
                     <div className="category-product-grid">
                         {currentProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
-            ) : (
-                <NotFound />
-            )}
+                ) : (
+                    <NotFound />
+                )}
             </React.Fragment>
 
-            <Pagination products={sortedProducts} setCurrentProducts={setCurrentProducts} productsPerPage={productsPerPage} />
+            <Pagination
+                products={sortedProducts}
+                setCurrentProducts={setCurrentProducts}
+                productsPerPage={productsPerPage}
+            />
         </div>
     );
 };
