@@ -13,7 +13,6 @@ exports.createCheckout = async (req, res) => {
             return res.status(404).json({ message: 'Cart not found' });
         }
 
-        // Prepare line items for Stripe checkout
         const lineItems = cart.items.map(item => ({
             price_data: {
                 currency: 'usd',
@@ -32,7 +31,7 @@ exports.createCheckout = async (req, res) => {
             quantity: item.quantity,
         }));
 
-        // Add discount if applicable
+
         if (cart.totalDiscount > 0) {
             lineItems.push({
                 price_data: {
@@ -47,7 +46,6 @@ exports.createCheckout = async (req, res) => {
             });
         }
 
-        // Add delivery tax as a separate line item
         if (cart.deliveryTax > 0) {
             lineItems.push({
                 price_data: {
@@ -62,8 +60,6 @@ exports.createCheckout = async (req, res) => {
             });
         }
 
-        // Log the final lineItems for review
-        // console.log("Line Items for Stripe Checkout: ", JSON.stringify(lineItems, null, 2));
 
         // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
@@ -72,9 +68,9 @@ exports.createCheckout = async (req, res) => {
             line_items: lineItems,
             success_url: 'http://localhost:5173/checkout/success',
             cancel_url: 'http://localhost:5173/checkout/failed',
+            // success_url: `${process.env.CLIENT_URL}/checkout/success`,
+            // cancel_url: `${process.env.CLIENT_URL}/checkout/cancel`,
         });
-        // success_url: `${process.env.CLIENT_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        // cancel_url: `${process.env.CLIENT_URL}/checkout/cancel`,
 
         res.json({ id: session.id });
     } catch (error) {
